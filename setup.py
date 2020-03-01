@@ -12,5 +12,11 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/EdKenbers/kenbers-calculator',
-    packages=find_packages('src')
+    package_dir={'': 'src'},
+    python_requires='>=3.8',
+    entry_points={
+        'console_scripts': [
+            'kcalculator=kcalculator.calculatorgui:main'
+    ]
+    },
 )
