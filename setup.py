@@ -4,7 +4,7 @@ with open('README.md', 'r') as f:
     long_description = f.read()
 
 setup(
-    name='kenbers-calculator',
+    name='kcalculator',
     version='0.1.0',
     author='Ed. Kenbers',
     author_email='git@kenbers.com',
