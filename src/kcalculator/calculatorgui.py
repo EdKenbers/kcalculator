@@ -77,7 +77,7 @@ class CalculatorGui(Frame):
         self.number1=None
         self.number2=None
         self.result=None
-        self.cSum=summodule.CalculatorSum()
+        self.cSum=summodule.KSum()
         self.createDisplay()
         self.createNumbers()
         self.createPlusSign()

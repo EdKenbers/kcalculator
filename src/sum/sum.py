@@ -1,5 +1,5 @@
 # CalculatorSum Class definition
-class CalculatorSum:
+class KSum:
     # Passing a list of two numbers can make and return the sum
     '''
     Testing simple init
