@@ -11,8 +11,10 @@ spec.loader.exec_module(summodule)
 class CalculatorGui(Frame):
 
     numbers=[0,1,2,3,4,5,6,7,8,9]
-    gridrow=[1,1,1,2,2,2,3,3,3,4]
-    gridcol=[0,1,2,0,1,2,0,1,2,0]
+    gridrow=[4,3,3,3,2,2,2,1,1,1]
+    gridcol=[1,2,1,0,2,1,0,2,1,0]
+    signgridrow=[1,2,3,4]
+    signgridcol=[3,3,3,3] # Maybe not needed
     numberposition=1
     number1Text=""
     number2Text=""
@@ -29,23 +31,23 @@ class CalculatorGui(Frame):
         self.display.insert(END, "0")
         self.display.grid(row=0, column=0, sticky="we")
     
-    def createPlusSign(self):
+    def createSign(self, sign, gridnum):
         self.ButPlus = Button(self,height=5,width=33)
-        self.ButPlus["text"] = "+"
-        self.ButPlus["command"] = self.whichNumber
-        self.ButPlus.grid(row=4, column=1)
+        self.ButPlus["text"] = sign
+        self.ButPlus["command"] = partial( self.whichNumber, sign )
+        self.ButPlus.grid(row = self.signgridrow[gridnum], column = self.signgridcol[gridnum])
     
     def createEquals(self):
         self.ButEquals = Button(self,height=5,width=33)
         self.ButEquals["text"] = "="
         self.ButEquals["command"] = self.getTotal
-        self.ButEquals.grid(row=4, column=2)
+        self.ButEquals.grid(row=4, column=3)
 
     def setDisplayText(self, text):
         self.display.delete("1.0", END)
         self.display.insert(END, text)
 
-    def whichNumber(self):
+    def whichNumber(self, sign = "+" ):
         if self.numberposition == 1:
             self.numberposition = 2
         else:
@@ -74,13 +76,27 @@ class CalculatorGui(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack()
+        
+        # Initializing vars
         self.number1=None
         self.number2=None
         self.result=None
+
+        # Creating KSum Instance
         self.cSum=summodule.KSum()
+
+        # Creating display text box 
         self.createDisplay()
+
+        # Creating numbers display
         self.createNumbers()
-        self.createPlusSign()
+
+        # Creating signs display
+        self.createSign("x", 0)
+        self.createSign("-", 1)
+        self.createSign("+", 2)
+
+        # Creating equals display
         self.createEquals()
 
 def main():
