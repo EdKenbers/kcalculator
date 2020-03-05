@@ -2,7 +2,7 @@ from functools import partial
 from tkinter import *
 import importlib.util
 
-spec = importlib.util.spec_from_file_location("sum", "src/sum/sum.py")
+spec = importlib.util.spec_from_file_location("kcalc", "src/kcalc/kcalc.py")
 summodule = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(summodule)
 
@@ -40,7 +40,7 @@ class CalculatorGui(Frame):
     def createEquals(self):
         self.ButEquals = Button(self,height=5,width=33)
         self.ButEquals["text"] = "="
-        self.ButEquals["command"] = self.getTotal
+        self.ButEquals["command"] = partial( self.getTotal, True )
         self.ButEquals.grid(row=4, column=3)
 
     def setDisplayText(self, text):
@@ -48,10 +48,14 @@ class CalculatorGui(Frame):
         self.display.insert(END, text)
 
     def whichNumber(self, sign = "+" ):
+        self.sign = sign
         if self.numberposition == 1:
             self.numberposition = 2
         else:
-            self.numberposition = 1
+            self.getTotal(False)
+            # Changing number[0] to last result
+            self.number1Text = str(self.result)
+            self.number2Text = ""
 
     def addNumber(self,number):
         if(self.numberposition == 2):
@@ -61,17 +65,22 @@ class CalculatorGui(Frame):
             self.number1Text = str(self.number1Text) + str (number)
             self.setDisplayText(self.number1Text)
 
-    def getTotal(self):
+    def getTotal(self, isEquals):
         if(not self.number1Text == ""):
             number1=str(self.number1Text)
             number2=str(self.number2Text)
-            self.cSum.setNumbers([int(number1),int(number2)])
-            self.cSum.calcSum()
-            self.result=self.cSum.getResult()
+            self.result=self.kCalc.getResult(self.sign,[int(number1),int(number2)])
+
+            # Showing Result
             self.setDisplayText(str(self.result))
-            self.number1Text=""
-            self.number2Text=""
-            self.whichNumber()
+
+            # if you click on Equals sign, reset number position and Text
+            if isEquals == True:
+                # Reset numbers text
+                self.number1Text=""
+                self.number2Text=""
+                
+                self.numberposition = 1
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
@@ -81,9 +90,10 @@ class CalculatorGui(Frame):
         self.number1=None
         self.number2=None
         self.result=None
+        self.sign="+"
 
-        # Creating KSum Instance
-        self.cSum=summodule.KSum()
+        # Creating KCalc Instance
+        self.kCalc=summodule.KCalc()
 
         # Creating display text box 
         self.createDisplay()
