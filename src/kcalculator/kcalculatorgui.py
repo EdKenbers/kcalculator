@@ -1,8 +1,9 @@
 import importlib.util
 
+from tkinter import Frame,Button,Text,DISABLED,END  
 from functools import partial
-from tkinter import Tk,Frame,Button,Text,DISABLED,END
 from kcalc.kcalc import KCalc
+
 
 class CalculatorGui(Frame):
 
@@ -132,9 +133,3 @@ class CalculatorGui(Frame):
         # Showing all gui elements
         self.showingGui()
 
-def main():
-    from tkinter import Tk
-
-    root = Tk()
-    calc = CalculatorGui(master=root)
-    calc.mainloop()
