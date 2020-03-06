@@ -1,12 +1,8 @@
-from functools import partial
-from tkinter import *
 import importlib.util
 
-spec = importlib.util.spec_from_file_location("kcalc", "src/kcalc/kcalc.py")
-summodule = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(summodule)
-
-
+from functools import partial
+from tkinter import Tk,Frame,Button,Text,DISABLED,END
+from kcalc.kcalc import KCalc
 
 class CalculatorGui(Frame):
 
@@ -26,29 +22,39 @@ class CalculatorGui(Frame):
             self.nButton["command"] = partial( self.addNumber, str(num))
             self.nButton.grid(row=self.gridrow[num], column=self.gridcol[num])
 
+    def createPoint(self):
+        self.butPoint = Button(self,height=5,width=33,state=DISABLED)
+        self.butPoint["text"] = ","
+        self.butPoint.grid(row=4, column=2)
+
     def createDisplay(self):
         self.display = Text(self, height = 1, width = 1)
         self.display.insert(END, "0")
         self.display.grid(row=0, column=0, sticky="we")
+
+    def createClear(self):
+        self.butClear = Button(self,height=5,width=33)
+        self.butClear["text"] = "Clear"
+        self.butClear["command"] = partial( self.clear )
+        self.butClear.grid(row=4, column=0)
     
     def createSign(self, sign, gridnum):
-        self.ButPlus = Button(self,height=5,width=33)
-        self.ButPlus["text"] = sign
-        self.ButPlus["command"] = partial( self.whichNumber, sign )
-        self.ButPlus.grid(row = self.signgridrow[gridnum], column = self.signgridcol[gridnum])
+        self.butSign = Button(self,height=5,width=33)
+        self.butSign["text"] = sign
+        self.butSign["command"] = partial( self.whichNumber, sign )
+        self.butSign.grid(row = self.signgridrow[gridnum], column = self.signgridcol[gridnum])
     
     def createEquals(self):
-        self.ButEquals = Button(self,height=5,width=33)
-        self.ButEquals["text"] = "="
-        self.ButEquals["command"] = partial( self.getTotal, True )
-        self.ButEquals.grid(row=4, column=3)
+        self.butEquals = Button(self,height=5,width=33)
+        self.butEquals["text"] = "="
+        self.butEquals["command"] = partial( self.getTotal, True )
+        self.butEquals.grid(row=4, column=3)
 
     def setDisplayText(self, text):
         self.display.delete("1.0", END)
         self.display.insert(END, text)
 
     def whichNumber(self, sign = "+" ):
-        self.sign = sign
         if self.numberposition == 1:
             self.numberposition = 2
         else:
@@ -56,6 +62,7 @@ class CalculatorGui(Frame):
             # Changing number[0] to last result
             self.number1Text = str(self.result)
             self.number2Text = ""
+        self.sign = sign
 
     def addNumber(self,number):
         if(self.numberposition == 2):
@@ -64,6 +71,10 @@ class CalculatorGui(Frame):
         else:
             self.number1Text = str(self.number1Text) + str (number)
             self.setDisplayText(self.number1Text)
+
+    def clear(self):
+        self.resetVars()
+        self.setDisplayText("0")
 
     def getTotal(self, isEquals):
         if(not self.number1Text == ""):
@@ -77,10 +88,33 @@ class CalculatorGui(Frame):
             # if you click on Equals sign, reset number position and Text
             if isEquals == True:
                 # Reset numbers text
-                self.number1Text=""
-                self.number2Text=""
-                
-                self.numberposition = 1
+               self.resetVars()
+
+    def resetVars(self):
+            # Reset numbers text
+            self.number1Text=""
+            self.number2Text=""
+            self.numberposition = 1
+
+    def showingGui(self):
+        # Creating display text box 
+        self.createDisplay()
+
+        # Creating numbers and point display
+        self.createNumbers()
+        self.createPoint()
+
+        # Creating signs display
+        self.createSign("x", 0)
+        self.createSign("-", 1)
+        self.createSign("+", 2)
+
+        # Creating Clear Button
+        self.createClear()
+
+        # Creating equals display
+        self.createEquals()
+
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
@@ -93,21 +127,10 @@ class CalculatorGui(Frame):
         self.sign="+"
 
         # Creating KCalc Instance
-        self.kCalc=summodule.KCalc()
+        self.kCalc=KCalc()
 
-        # Creating display text box 
-        self.createDisplay()
-
-        # Creating numbers display
-        self.createNumbers()
-
-        # Creating signs display
-        self.createSign("x", 0)
-        self.createSign("-", 1)
-        self.createSign("+", 2)
-
-        # Creating equals display
-        self.createEquals()
+        # Showing all gui elements
+        self.showingGui()
 
 def main():
     from tkinter import Tk
