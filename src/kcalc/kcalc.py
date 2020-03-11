@@ -1,40 +1,9 @@
 from functools import reduce
 import operator
 
-# CalculatorSum Class definition
+# KCalc Class definition
 class KCalc:
-    # Passing a list of two numbers can make and return the sum
-    '''
-    Testing simple init
-    >>> csum=KCalc()
-    >>> csum.getResult("+", [2,0])
-    2
-
-    Testing other numbers
-    >>> numbers=[4,8]
-    >>> csum.getResult("+",numbers)
-    12
-
-    Testing negative numbers
-    >>> numbers=[-4,-10]
-    >>> csum.getResult("+",numbers)
-    -14
-
-    Testing substract numbers
-    >>> numbers=[4,10]
-    >>> csum.getResult("-",numbers)
-    -6
-
-    Testing multiply numbers
-    >>> numbers=[4,10]
-    >>> csum.getResult("x",numbers)
-    40
-
-    Testing divide numbers
-    >>> numbers=[8,4]
-    >>> csum.getResult("/",numbers)
-    2.0
-    '''
+    # Passing a list of two numbers can make and return the sum, substract, multiply and divide
 
     def __init__(self):
         self.numbers = [ 0, 0 ]
