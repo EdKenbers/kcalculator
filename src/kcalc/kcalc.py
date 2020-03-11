@@ -7,8 +7,8 @@ class KCalc:
     '''
     Testing simple init
     >>> csum=KCalc()
-    >>> csum.getResult("+", [0,0])
-    0
+    >>> csum.getResult("+", [2,0])
+    2
 
     Testing other numbers
     >>> numbers=[4,8]
@@ -46,15 +46,14 @@ class KCalc:
 
     # Make the sum of two numbers
     def calc(self, sign):
-        if self.numbers[0] and self.numbers[1]:
-            if sign == "+":
-                self.result = reduce(operator.add, self.numbers)
-            elif sign == "-":
-                self.result = reduce(operator.sub, self.numbers)
-            elif sign == "x":
-                self.result = reduce(operator.mul, self.numbers)
-            elif sign == "/":
-                self.result = reduce(operator.truediv, self.numbers)
+        if sign == "+":
+            self.result = operator.add(self.numbers[0],self.numbers[1])
+        elif sign == "-":
+            self.result = operator.sub(self.numbers[0],self.numbers[1])
+        elif sign == "x":
+            self.result = operator.mul(self.numbers[0],self.numbers[1])
+        elif sign == "/":
+            self.result = operator.truediv(self.numbers[0],self.numbers[1])
 
     # Return the sum of the two numbers
     def getResult(self, sign, numbers):
