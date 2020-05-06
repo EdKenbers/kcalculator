@@ -1,3 +1,7 @@
+# Importing src dir
+import sys
+sys.path.append('./src')
+
 import unittest
 from kcalc.kcalc import KCalc
 
