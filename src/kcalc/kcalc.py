@@ -9,11 +9,11 @@ class KCalc:
         self.numbers = [ 0, 0 ]
         self.result = 0
     
-    # Change numbers to sum
+    # Change numbers to sum, substract, multiply and divide
     def setNumbers(self, numbers):
-        self.numbers=numbers
+        self.numbers = numbers
 
-    # Make the sum of two numbers
+    # Make the sum , substract, multiply and divide of two numbers
     def calc(self, sign):
         if sign == "+":
             self.result = operator.add(self.numbers[0],self.numbers[1])
